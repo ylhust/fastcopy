@@ -1,2 +1,0 @@
-/yl/copy/1.txt
-/yl/copy/test/2.txt
