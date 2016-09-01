@@ -78,17 +78,17 @@ void main()
 			printf("---------------------------------------------------------------------------------------------------\n");
 			start_point = alloc_bitmap(b_buf, bit_map);
 			//printf("start_point:%d\n",start_point);
-			while(start_point == 0)
+/* 			while(start_point == 0)
 			{
 				lseek(fd, (int64_t)(bit_blk-15)*BLK_SIZE, SEEK_SET);
-				write(fd, bit_map, BLK_SIZE*FLEX_BLK);
+				//write(fd, bit_map, BLK_SIZE*FLEX_BLK);
 				tar_bit = 0;
 				while((fscanf(bitmap,"%d",&bit_blk)>0)&&i<FLEX_BLK)
 				{
 					lseek(fd,(int64_t) bit_blk*BLK_SIZE, SEEK_SET);
 					read(fd, bit_map+i*BLK_SIZE, BLK_SIZE);
 					tar_bit++;
-					tar_bit++;
+					tar++;
 					final_bit = bit_blk;
 				}
 				start_point = alloc_bitmap(b_buf, bit_map);
@@ -97,11 +97,11 @@ void main()
 					bit_blk = final_bit;
 					goto no_full;
 				}
-			}
+			} */
 
 			lseek(fd, (int64_t)((tar - FLEX_BLK)*TOTAL_BLK  + start_point)*BLK_SIZE, SEEK_SET);
 			
-			write(fd, data_buff, b_buf*BLK_SIZE);
+			//write(fd, data_buff, b_buf*BLK_SIZE);
 			
 			//write inode
 			for(i=0;i<=i_buf;i++)
@@ -109,7 +109,7 @@ void main()
 				alloc_inode(inode_buff,blk_order_size[i],i*INODE_SIZE,(int64_t)((tar - FLEX_BLK)*TOTAL_BLK  + start_point));
 				lseek(fd,(int64_t)inode_order[i],SEEK_SET);
 				start_point=start_point+blk_order_num[i];
-				write(fd,inode_buff+i*INODE_SIZE,INODE_SIZE);
+				//write(fd,inode_buff+i*INODE_SIZE,INODE_SIZE);
 			}
 			goto no_full;
 		}
@@ -132,7 +132,7 @@ void main()
 			while(start_point==0)
 			{
 				lseek(fd, (int64_t)(bit_blk-15)*BLK_SIZE, SEEK_SET);
-				write(fd, bit_map, BLK_SIZE*FLEX_BLK);
+				//write(fd, bit_map, BLK_SIZE*FLEX_BLK);
 				tar_bit = 0;
 				while((fscanf(bitmap,"%d",&bit_blk)>0)&&tar_bit<FLEX_BLK)
 				{
@@ -152,7 +152,7 @@ void main()
 			}
 			//printf("pos:%lld\n",(int64_t)(tar - FLEX_BLK)*TOTAL_BLK  + start_point);
 			lseek(fd, (int64_t)((tar - FLEX_BLK)*TOTAL_BLK  + start_point)*BLK_SIZE, SEEK_SET);
-			write(fd, data_buff, b_buf*BLK_SIZE);
+			//write(fd, data_buff, b_buf*BLK_SIZE);
 			
 		
 			//write inode
@@ -162,7 +162,7 @@ void main()
 				alloc_inode(inode_buff,blk_order_size[i],i*INODE_SIZE,(int64_t)((tar - FLEX_BLK)*TOTAL_BLK  + start_point));
 				lseek(fd,(int64_t)inode_order[i],SEEK_SET);
 				start_point=start_point+blk_order_num[i];
-				write(fd,inode_buff+i*INODE_SIZE,INODE_SIZE);
+				//write(fd,inode_buff+i*INODE_SIZE,INODE_SIZE);
 			}
 			
 			k=0;
@@ -176,8 +176,8 @@ void main()
 		//read new inode
 		//printf("pos:%lld\n",(int64_t)pos);
 		lseek(fd,(int64_t)pos,SEEK_SET);
-		n = read(fd, inode_buff+(unsigned short int)i_buf*INODE_SIZE,INODE_SIZE);
-			
+
+		n = read(fd, inode_buff+(unsigned short int)i_buf*INODE_SIZE,INODE_SIZE);		
 		blk_order_size[i_buf] =buf.st_size;
 		blk_order_num[i_buf] = blk_num;
 		inode_order[i_buf++] = pos;
@@ -193,7 +193,7 @@ no_full:
 	fclose(file);
 	fclose(alloc);
 	lseek(fd, (int64_t)(bit_blk-tar_bit)*BLK_SIZE, SEEK_SET);
-	write(fd, bit_map, BLK_SIZE*tar_bit);
+	//write(fd, bit_map, BLK_SIZE*tar_bit);
 }
 
 int size_to_block(long int size)
